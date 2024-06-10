@@ -1,0 +1,31 @@
+// SearchParking.js
+import React, { useState } from 'react';
+import { getNearbyParkings } from './api/parkingAPI'; // Supposons que vous avez un module d'API pour obtenir les parkings à proximité
+
+const SearchParking = ({ userLocation }) => {
+  const [nearbyParkings, setNearbyParkings] = useState([]);
+
+  const handleSearch = () => {
+    getNearbyParkings(userLocation)
+      .then(parkings => {
+        setNearbyParkings(parkings);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la recherche de parkings à proximité:', error);
+      });
+  };
+
+  return (
+    <div>
+      <input type="text" placeholder="Rechercher un parking..." />
+      <button onClick={handleSearch}>Rechercher</button>
+      <ul>
+        {nearbyParkings.map(parking => (
+          <li key={parking.id}>{`Parking ${parking.id}`}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default SearchParking;
