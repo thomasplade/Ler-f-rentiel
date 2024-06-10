@@ -1,0 +1,30 @@
+// App.js
+import React, { useState, useEffect } from 'react';
+import Map from './Map';
+
+const App = () => {
+  const [userLocation, setUserLocation] = useState(null);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération de la localisation de l\'utilisateur:', error);
+      }
+    );
+  }, []);
+
+  return (
+    <div>
+      <h1>Recherche de places de parking</h1>
+      {userLocation && <Map userLocation={userLocation} nearbyParkings={[]} />}
+    </div>
+  );
+};
+
+export default App;
